@@ -136,8 +136,8 @@ In proteomics, proteins are digested to so-called peptides since peptides are mu
 \subsection{Computing the Parent Ion Mass}
 <<keep.source = TRUE, eval = TRUE, fig = TRUE>>=
 library(protViz)
-op<-par(mfrow=c(1,1))
-fetuin<-c('MK', 'SFVLLFCLAQLWGCHSIPLDPVAGYK',
+op <- par(mfrow=c(1,1))
+fetuin <- c('MK', 'SFVLLFCLAQLWGCHSIPLDPVAGYK',
 'EPACDDPDTEQAALAAVDYINK',
 'HLPR', 'GYK', 'HTLNQIDSVK', 'VWPR', 
 'RPTGEVYDIEIDTLETTCHVLDPTPLANCSVR',
@@ -150,8 +150,8 @@ fetuin<-c('MK', 'SFVLLFCLAQLWGCHSIPLDPVAGYK',
 'VTCTLFQTQPVIPQPQPDGAEAEAPSAVPDAAGPTPSAAGPPVASVVVGPSVVAVPLPLHR',
 'AHYDLR', 'HTFSGVASVESSSGEAFHVGK',
 'TPIVGQPSIPGGPVR', 'LCPGR', 'IR', 'YFK', 'I')
-(pm<-parentIonMass(fetuin))
-op<-par(mfrow=c(2,1))
+(pm <- parentIonMass(fetuin))
+op <- par(mfrow=c(2,1))
 plot(pm, ylab="peptide mass [in Da]", 
     main="Fetuin Peptide tryptic digested.")
 hist(pm, xlab="peptide mass [in Da]")
@@ -168,10 +168,10 @@ defaultIon
 @
 
 <<keep.source = TRUE, eval = TRUE, fig = TRUE>>=
-peptides<-c('HTLNQIDSVK', 'ALGGEDVR', 'TPIVGQPSIPGGPVR')
+peptides <- c('HTLNQIDSVK', 'ALGGEDVR', 'TPIVGQPSIPGGPVR')
 
-pim<-parentIonMass(peptides)
-fi<-fragmentIon(peptides)
+pim <- parentIonMass(peptides)
+fi <- fragmentIon(peptides)
 
 par(mfrow=c(3,1)); 
 for (i in 1:length(peptides)){
@@ -185,7 +185,7 @@ for (i in 1:length(peptides)){
         sub=paste( pim[i], "Da"));
     box()
     axis(1,fi[i][[1]]$b,round(fi[i][[1]]$b,2))
-    pepSeq<-strsplit(peptides[i],"")
+    pepSeq <- strsplit(peptides[i],"")
     axis(3,fi[i][[1]]$b,pepSeq[[1]])
 
     abline(v=fi[i][[1]]$b, col='red',lwd=2) 
@@ -197,9 +197,9 @@ for (i in 1:length(peptides)){
 
 The next lines compute the singly and doubly charged fragment ions of the \code{HTLNQIDSVK} peptide. Which are usually the ones that can be used to make an identification.
 <<keep.source = TRUE, eval = TRUE, fig = FALSE>>=
-Hydrogen<-1.007825
-(fi.HTLNQIDSVK.1<-fragmentIon('HTLNQIDSVK'))[[1]]
-(fi.HTLNQIDSVK.2<-(fi.HTLNQIDSVK.1[[1]] + Hydrogen) / 2)
+Hydrogen <- 1.007825
+(fi.HTLNQIDSVK.1 <- fragmentIon('HTLNQIDSVK'))[[1]]
+(fi.HTLNQIDSVK.2 <- (fi.HTLNQIDSVK.1[[1]] + Hydrogen) / 2)
 @
 
 
@@ -214,8 +214,8 @@ is inside the 'accuracy' mass window of the mass spec device the
 in-silico fragment ion is considered as potential hit.
 
 <<keep.source = TRUE, eval = TRUE, fig = TRUE>>=
-    peptideSequence<-'HTLNQIDSVK'
-    spec<-list(scans=1138,
+    peptideSequence <- 'HTLNQIDSVK'
+    spec <- list(scans=1138,
         title="178: (rt=22.3807) [20080816_23_fetuin_160.RAW]",
         rtinseconds=1342.8402,
         charge=2,
@@ -231,18 +231,18 @@ in-silico fragment ion is considered as potential hit.
     1267, 1542, 979.2, 9577, 3283, 9441, 1520, 1310, 1.8e+04,
     587.5, 2685, 671.7, 3734, 8266, 3309))
 
-    fi<-fragmentIon(peptideSequence)
-    n<-nchar(peptideSequence)
+    fi <- fragmentIon(peptideSequence)
+    n <- nchar(peptideSequence)
 
-    by.mZ<-c(fi[[1]]$b, fi[[1]]$y)
-    by.label<-c(paste("b",1:n,sep=''), paste("y",n:1,sep=''))
+    by.mZ <- c(fi[[1]]$b, fi[[1]]$y)
+    by.label <- c(paste("b",1:n,sep=''), paste("y",n:1,sep=''))
 
     # should be a R-core function as findInterval!
-    idx<-findNN(by.mZ, spec$mZ) 
+    idx <- findNN(by.mZ, spec$mZ) 
 
-    mZ.error<-abs(spec$mZ[idx]-by.mZ)
+    mZ.error <- abs(spec$mZ[idx]-by.mZ)
 
-    plot(mZ.error[mZ.error.idx<-order(mZ.error)],
+    plot(mZ.error[mZ.error.idx <- order(mZ.error)],
         main="Error Plot",
         pch='o',
         cex=0.5,
@@ -261,23 +261,23 @@ The function \code{psm} is doing the peptide sequence matching. Of course, the m
 <<keep.source = TRUE, eval = TRUE, fig = FALSE>>=
 library(protViz)
 
-ptm.0<-cbind(AA="-", 
+ptm.0 <- cbind(AA="-", 
     mono=0.0, avg=0.0, desc="unmodified", unimodAccID=NA)
 
-ptm.616<-cbind(AA='S',
+ptm.616 <- cbind(AA='S',
     mono=-27.010899, avg=NA, desc="Substituition", 
     unimodAccID=616)
 
-ptm.651<-cbind(AA='N',
+ptm.651 <- cbind(AA='N',
     mono=27.010899, avg=NA, desc="Substituition", 
     unimodAccID=651)
 
 
-m<-as.data.frame(rbind(ptm.0, ptm.616, ptm.651))
+m <- as.data.frame(rbind(ptm.0, ptm.616, ptm.651))
 
 genMod(c('TAFDEAIAELDTLNEESYK','TAFDEAIAELDTLSEESYK'), m$AA)
 
-fi<-fragmentIon(c('TAFDEAIAELDTLSEESYK', 
+fi <- fragmentIon(c('TAFDEAIAELDTLSEESYK', 
     'TAFDEAIAELDTLNEESYK', 'TAFDEAIAELDTLSEESYK', 
     'TAFDEAIAELDTLNEESYK'), 
         modified=c('0000000000000200000', 
@@ -285,8 +285,8 @@ fi<-fragmentIon(c('TAFDEAIAELDTLSEESYK',
         '0000000000000000000'), 
     modification=m$mono)
 
-#bh<-c('TAFDEAIAELDTLNEESYK', 'TAFDEAIAELDTLSEESYK')
-#fi<-fragmentIon(rep('HTLNQIDSVK',2), 
+#bh <- c('TAFDEAIAELDTLNEESYK', 'TAFDEAIAELDTLSEESYK')
+#fi <- fragmentIon(rep('HTLNQIDSVK',2), 
 #    modified=c('0000000100','0000000000'), 
 #    modification=m[,2])
 @
@@ -298,7 +298,7 @@ The labeling of the spectra can be done with the \code{peakplot} function.
 %\setkeys{Gin}{width=0.95\columnwidth}
 <<keep.source = TRUE, eval = TRUE, fig = TRUE>>=
 data(msms)
-op<-par(mfrow=c(2,1))
+op <- par(mfrow=c(2,1))
 peakplot("TAFDEAIAELDTLNEESYK", msms[[1]])
 peakplot("TAFDEAIAELDTLSEESYK", msms[[2]])
 par(op)
@@ -323,9 +323,9 @@ fetuin concentration spiked into the sample.
 library(lattice)
 data(fetuinLFQ)
 
-cv<-1-1:7/10
-t<-trellis.par.get("strip.background")
-t$col<-(rgb(cv,cv,cv))
+cv <- 1-1:7/10
+t <- trellis.par.get("strip.background")
+t$col <- (rgb(cv,cv,cv))
 trellis.par.set("strip.background",t)
 
 print(xyplot(abundance~conc|prot*method,
@@ -367,18 +367,18 @@ Progenesis is a graphical software which does the aligning between several LCMS 
 data(pgLFQfeature)
 data(pgLFQprot)
 
-featureDensityPlot<-function(data, n=ncol(data), nbins=30){
-    my.col<-rainbow(n);
-    mids<-numeric()
-    density<-numeric()
+featureDensityPlot <- function(data, n=ncol(data), nbins=30){
+    my.col <- rainbow(n);
+    mids <- numeric()
+    density <- numeric()
     for (i in 1:n) { 
-        h<-hist(data[,i],nbins, plot=FALSE)
-        mids<-c(mids, h$mids)
-        density<-c(density, h$density)
+        h <- hist(data[,i],nbins, plot=FALSE)
+        mids <- c(mids, h$mids)
+        density <- c(density, h$density)
     }
     plot(mids,density, type='n')
     for (i in 1:n) { 
-        h<-hist(data[,i],nbins, plot=FALSE)
+        h <- hist(data[,i],nbins, plot=FALSE)
         lines(h$mids,h$density, col=my.col[i])
     }
     legend("topleft", names(data), cex=0.5,
@@ -395,8 +395,8 @@ The \code{featureDensityPlot} shows the normalized signal intensity
 distribution (asinh transformed) over 24 LCMS runs which are aligned in this experiment.
 
 <<keep.source = TRUE, eval = TRUE, fig = TRUE>>=
-op<-par(mfrow=c(1,1),mar=c(18,18,4,1),cex=0.5)
-samples<-names(pgLFQfeature$"Normalized abundance")
+op <- par(mfrow=c(1,1),mar=c(18,18,4,1),cex=0.5)
+samples <- names(pgLFQfeature$"Normalized abundance")
 image(cor(asinh(pgLFQfeature$"Normalized abundance")),
     col=gray(seq(0,1,length=20)),
     main='pgLFQfeature correlation',
@@ -414,7 +414,7 @@ par(op)
 This image plot shows the correlation between runs on feature level (values are asinh transformed). White is perfect correlation while black indicates a poor correlation.
 
 <<keep.source = TRUE, eval = TRUE, fig = TRUE>>=
-op<-par(mfrow=c(1,1),mar=c(18,18,4,1),cex=0.5)
+op <- par(mfrow=c(1,1),mar=c(18,18,4,1),cex=0.5)
 image(cor(asinh(pgLFQprot$"Normalized abundance")),
     main='pgLFQprot correlation',
     axes=FALSE,
@@ -432,7 +432,7 @@ Stricking is the fact that the six biological replicates for each condition clus
 
 <<keep.source = TRUE, eval = TRUE, fig = TRUE>>=
 par(mfrow=c(2,2),mar=c(6,3,4,1))
-ANOVA<-pgLFQaov(pgLFQprot$"Normalized abundance", 
+ANOVA <- pgLFQaov(pgLFQprot$"Normalized abundance", 
     groups=as.factor(pgLFQprot$grouping), 
     names=pgLFQprot$output$Accession,
     idx=c(15,16,196,107),
@@ -449,14 +449,14 @@ The data for the next section is an iTRAQ-8-plex experiment where two conditions
 \subsubsection{Sanity Check}
 <<keep.source = TRUE, eval = TRUE, fig = TRUE>>=
 data(iTRAQ)
-x<-rnorm(100)
+x <- rnorm(100)
 par(mfrow=c(3,3),mar=c(6,4,3,0.5));
 for (i in 3:10){
     qqnorm(asinh(iTRAQ[,i]), 
         main=names(iTRAQ)[i])
     qqline(asinh(iTRAQ[,i]), col='grey')
 }
-b<-boxplot(asinh(iTRAQ[,c(3:10)]), main='boxplot iTRAQ')
+b <- boxplot(asinh(iTRAQ[,c(3:10)]), main='boxplot iTRAQ')
 @
 
 A first quality check to see if all reporter ion channels are having the same distributions. Shown in the figure are Q-Q plots of the individual reporter channels against a normal distribution.
@@ -465,28 +465,28 @@ The last is a boxplot for all individual channels.
 \subsubsection{On Protein Level}
 <<keep.source = TRUE, eval = TRUE, fig = TRUE>>=
 data(iTRAQ)
-group1Protein<-numeric()
-group2Protein<-numeric()
+group1Protein <- numeric()
+group2Protein <- numeric()
 
 for (i in c(3,4,5,6))
-    group1Protein<-cbind(group1Protein,
+    group1Protein <- cbind(group1Protein,
         asinh(tapply(iTRAQ[,i], paste(iTRAQ$prot), sum, na.rm=TRUE)))
          
 for (i in 7:10)
-    group2Protein<-cbind(group2Protein,
+    group2Protein <- cbind(group2Protein,
         asinh(tapply(iTRAQ[,i], paste(iTRAQ$prot), sum, na.rm=TRUE)))
                   
                   
 par(mfrow=c(2,3),mar=c(6,3,4,1))
 for (i in 1:nrow(group1Protein)){
     boxplot.color="#ffcccc"
-    tt.p_value<-t.test(as.numeric(group1Protein[i,]), 
+    tt.p_value <- t.test(as.numeric(group1Protein[i,]), 
         as.numeric(group2Protein[i,]))$p.value       
 
     if (tt.p_value < 0.05)
         boxplot.color='lightgreen'
 
-    b<-boxplot(as.numeric(group1Protein[i,]), 
+    b <- boxplot(as.numeric(group1Protein[i,]), 
         as.numeric(group2Protein[i,]),
         main=row.names(group1Protein)[i],
         sub=paste("t-Test: p-value =", round(tt.p_value,2)),
@@ -507,7 +507,7 @@ This figure shows five proteins which are tested if they differ accross conditio
 The same can be done on peptide level using the \code{protViz} function \code{iTRAQ2GroupAnalysis}. 
 <<keep.source = TRUE, eval = TRUE, fig = FALSE>>=
 data(iTRAQ)
-q<-iTRAQ2GroupAnalysis(data=iTRAQ, 
+q <- iTRAQ2GroupAnalysis(data=iTRAQ, 
     group1=c(3,4,5,6), 
     group2=7:10, 
     INDEX=paste(iTRAQ$prot,iTRAQ$peptide), 
@@ -535,12 +535,12 @@ The Trellis \code{xyplot} shows the Pc development over each instrument
 run to a specified relative run time (25,30,...).
 
 <<keep.source = TRUE, eval = TRUE, fig = TRUE>>=
-pp.data<-pps(pressureProfile, time=seq(25,40,by=5))
+pp.data <- pps(pressureProfile, time=seq(25,40,by=5))
 print(xyplot(Pc ~ as.factor(file) | paste("time =", 
     as.character(time), "minutes"),
     panel = function(x, y){
-        m<-sum(y)/length(y)
-        m5<-(max(y)-min(y))*0.05
+        m <- sum(y)/length(y)
+        m5 <- (max(y)-min(y))*0.05
         panel.abline(h=c(m-m5,m,m+m5), 
             col=rep("#ffcccc",3),lwd=c(1,2,1))
         panel.grid(h=-1, v=0)
@@ -556,7 +556,7 @@ print(xyplot(Pc ~ as.factor(file) | paste("time =",
 While each panel in the \code{xyplot} above shows the data to a given point in time, we try to use the levelplot 
 to get an overview of the whole pressure profile data.
 <<keep.source = TRUE, eval = TRUE, fig = TRUE>>=
-pp.data<-pps(pressureProfile, time=seq(0,140,length=128))
+pp.data <- pps(pressureProfile, time=seq(0,140,length=128))
 print(levelplot(Pc ~ time * as.factor(file),
     main='Pc(psi)',
     data=pp.data,

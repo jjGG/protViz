@@ -41,15 +41,15 @@
     of magnitude.
 
 
-    \code{sigmamix$qc} contains the absolute measured peak areas for
-    each transition for all the SILAC peptide pairs, all machines and
+    \code{sigmamix$lf5} contains the absolute measured peak areas for
+    each transition for all the SILAC peptide pairs (light and heavy), 
+    all machines and
     all dilutions (in triplicates).
     The peak areas were computed using the Skyline software.
 
-    \code{sigmamix$ratio} contains the ratios 
-    derived from \code{log(light/heavy)/log(2)}, 
-    delution concentration, peptide, and
-    the mass spec devise as columns.
+   \code{sigmamix$rep5x8} contains the 
+    log2 ratios on all five plattforms from
+    eight technical replicates.
 
 }
 
@@ -74,14 +74,15 @@
 
     sigmamix$composition
 
-    sigmamix$ratio[1,]
-    
-    if ((require(lattice))){
+    cm<-c(grey.colors(38), 'lightgreen', 'darkgreen')
 
-        bwplot(as.character(conc) ~ ratio | peptide * msDevice,
-            data = sigmamix$ratio)
+    par(mfrow=c(1,1), mar=c(8,8,1,1));
+    image(rep5x8.cor <- cor(sigmamix$rep5x8), 
+        oldstyle=TRUE,
+        main='cor(sigmamix$rep5x8)', col=cm, zlim=c(0,1),axes=FALSE); 
+    axis(1, seq(0,1,length=nrow(rep5x8.cor)), row.names(rep5x8.cor),las=2);  
+    axis(2, seq(0,1,length=ncol(rep5x8.cor)), colnames(rep5x8.cor),las=2);
 
-    }
 }
 
 \keyword{datasets}

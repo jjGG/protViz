@@ -1,14 +1,15 @@
 #R
 # $HeadURL: http://fgcz-svn.unizh.ch/repos/fgcz/testing/proteomics/R/protViz/R/psm.R $
-# $Id: psm.R 6222 2014-03-13 14:22:34Z cpanse $
-# $Date: 2014-03-13 15:22:34 +0100 (Thu, 13 Mar 2014) $
+# $Id: psm.R 6936 2014-11-07 08:15:20Z cpanse $
+# $Date: 2014-11-07 09:15:20 +0100 (Fri, 07 Nov 2014) $
 
 
 # TODO 
 # compute score by sum of error div. by number of hits
 
-psm<-function(sequence, spec, FUN=defaultIon,
-    plot=TRUE, 
+psm<-function(sequence, 
+    spec, 
+    FUN=defaultIon,
     fi=fragmentIon(sequence, FUN=FUN)[[1]],
     fragmentIonError=0.6) { 
 
@@ -29,7 +30,6 @@ psm<-function(sequence, spec, FUN=defaultIon,
         by.label <- c(by.label, paste(fi.names[i],1:n,sep=''))
     }
 
-
     out <- .C("findNN_",
         nbyion=as.integer(length(by.mZ)),
         nmZ=as.integer(length(spec$mZ)),
@@ -40,44 +40,49 @@ psm<-function(sequence, spec, FUN=defaultIon,
 
     mZ.error<-spec$mZ[out$NN+1] - by.mZ
 
-    if (plot == TRUE){
-        plot(mZ.error[mZ.error.idx<-order(mZ.error)],
-            main=paste("Error of", sequence, "(parent ion mass =", round(pim,2) ,"Da)"),
-            ylim=c(-5*fragmentIonError, 5*fragmentIonError),
-            pch='o',
-            cex=0.5,
-            sub=paste('The error cut-off is', 
-                fragmentIonError, 'Da (grey line).'),
-            )
-
-        abline(h=fragmentIonError,col='grey')
-        abline(h=-fragmentIonError,col='grey')
-        abline(h=0,col='grey',lwd=2)
-
-        text(1:length(by.label), 
-            mZ.error[mZ.error.idx],  
-            by.label[mZ.error.idx],
-            cex=0.75,pos=3) 
-
-        hits=(abs(mZ.error) < fragmentIonError)
-        nHits<-sum(hits)
-
-        sumMZerror=round(sum(abs(mZ.error[hits])),2)
-
-        avgMZerror=round(sumMZerror / nHits, 2)
-        cover=round(nHits/(nrow(fi)*ncol(fi)),2)
-
-        legend("topleft", paste(c('nHits','sumMZerror','avgMZerror','cover'),
-            as.character(c(nHits, sumMZerror, avgMZerror, cover)),sep='=')) 
-    }
-
-
-    return (list(mZ.Da.error=mZ.error, 
-        mZ.ppm.error=1E+6*mZ.error/by.mZ,
+    res <- list(mZ.Da.error=mZ.error, 
+        mZ.error = mZ.error,
+        mZ.ppm.error= 1E+6 * mZ.error / by.mZ,
         idx=out$NN+1,
         label=by.label, 
         score=-1, 
+        pim=pim,
+        fragmentIonError=fragmentIonError,
         sequence=sequence,
-        fragmentIon=fi))
+        fragmentIon=fi)
+
+    class(res) <- "psm"
+
+    return(res)
 }
 
+
+plot.psm <- function(x, ...){
+        plot(x$mZ.error[ mZ.error.idx <- order(x$mZ.error) ],
+            main=paste("Error of", x$sequence, "(parent ion mass =", round(x$pim,2) ,"Da)"),
+            ylim=c(-5 * x$fragmentIonError, 5 * x$fragmentIonError),
+            pch='o',
+            sub=paste('The error cut-off is', 
+                x$fragmentIonError, 'Da (grey line).'), ...)
+
+        abline(h=x$fragmentIonError, col='grey')
+        abline(h=-x$fragmentIonError, col='grey')
+        abline(h=0, col='grey', lwd=2)
+
+        text(1:length(x$label), 
+            x$mZ.error[mZ.error.idx],  
+            x$label[mZ.error.idx],
+            cex=0.75, 
+            pos=3) 
+
+        hits <- (abs(x$mZ.error) < x$fragmentIonError)
+        nHits <- sum(hits)
+
+        sumMZerror <- round(sum(abs(x$mZ.error[hits])),2)
+
+        avgMZerror <- round(sumMZerror / nHits, 2)
+        cover <- round(nHits / (nrow(x$fragmentIon) * ncol(x$fragmentIon)), 2)
+
+        legend("topleft", paste(c('nHits','sumMZerror','avgMZerror','cover'),
+            as.character(c(nHits, sumMZerror, avgMZerror, cover)),sep='=')) 
+}

@@ -22,7 +22,6 @@
     psm(sequence, 
         spec, 
         FUN=defaultIon,
-        plot=TRUE, 
         fi=fragmentIon(sequence, FUN=FUN)[[1]],
         fragmentIonError)
 
@@ -36,9 +35,9 @@
 
   \item{FUN}{this function is passed to the \code{fragmentIon} function. the function to be applied to compute further ions. If no function is assigned \code{fragmentIon} will
     use \code{defaultIon}.}
-  \item{plot}{boolean if the error plot function is to be called.}
 
   \item{fi}{fragment ion table, if not specified \code{fragmentIon(sequence, FUN=FUN)[[1]]} is called. }
+
   \item{fragmentIonError}{fragment ion error cut-off. default is 0.6 Da. }
 
 }
@@ -73,9 +72,8 @@ spec<-list(scans=1138,
     587.5, 2685, 671.7, 3734, 8266, 3309)
     )
 
-m<-psm('HTLNQIDSVK', spec,plot=TRUE)
-hist(m$mZ.Da.error)
-hist(m$mZ.ppm.error)
-
+    m<-psm('HTLNQIDSVK', spec)
+    hist(m$mZ.Da.error)
+    hist(m$mZ.ppm.error)
 }
 

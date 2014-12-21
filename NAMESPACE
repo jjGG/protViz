@@ -21,6 +21,7 @@ export("pgLFQtNpq")
 export("ppp")
 export("pps")
 export("psm")
+export("plot.psm")
 export("PTM_MarkerFinder")
 export("PTM_MarkerFinder_util")
 
