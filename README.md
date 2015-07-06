@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/fgcz/protViz.svg?branch=fgcz)](https://travis-ci.org/fgcz/protViz.svg?branch=fgcz)
+[![Build Status](https://travis-ci.org/fgcz/protViz.svg?branch=fgcz)](https://travis-ci.org/fgcz/protViz)
 
 protViz
 =======
