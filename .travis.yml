@@ -7,4 +7,6 @@ warnings_are_errors: true
 r_binary_packages:
  - RUnit
  - Rcpp
+
+bioc_packages:
  - BiocGenerics
